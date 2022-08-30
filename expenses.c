@@ -104,7 +104,7 @@ int main() {
                 return 0;
                 break;
             
-            default: // 'option' option is not between 1 and 6.
+            default: // 'option' option is not between 1 and 9.
                 printf("\nInvalid option.\n");
                 break;
         }
