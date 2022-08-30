@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define NMAX 10
 #define LMAX 100
@@ -27,6 +28,11 @@ typedef struct Data{
     int elements;
 }TData;
 
+//profile of every function used in the program.
+bool Empty(TData* data);
+bool Full(TData* data);
+
+
 //void functions that will handle the menu.
 void Option1();
 void Option2();
@@ -36,6 +42,7 @@ void Option5();
 void Option6();
 void Option7();
 void Option8();
+void Option9();
 
 TData data;
 TDate date;
@@ -51,6 +58,7 @@ int main() {
     scanf("%d\n", &date.year);
 
     do{
+        //menu that will be displayed everytime the user runs the program
         printf("\n-----------------------------------\n");
         printf("New expense (1)\n");
         printf("Modify an expense (2)\n");
@@ -101,6 +109,7 @@ int main() {
                 break;
 
             case 9:
+                Option9();
                 return 0;
                 break;
             
@@ -109,4 +118,22 @@ int main() {
                 break;
         }
     } while (1);
+}
+
+bool Empty(TData* data){
+    // if the amount of elements in the array is equal to 0, it returns True.
+    if ((*data).elements== 0){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool Full(TData* data){
+    // if the amount of elements in the array is equal to NMAX, it returns True.
+    if ((*data).elements == NMAX){
+        return true;
+    }else{
+        return false;
+    }
 }
