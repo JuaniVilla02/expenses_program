@@ -3,27 +3,27 @@
 #include <stdlib.h>
 
 #define NMAX 10
-#define LMAX 70
+#define LMAX 100
 
 //struct that stores all the aspects of a date.
 typedef struct Date{
     int day;
     int month;
     int year;
-}Date;
+}TDate;
 
 //sruct that stores all the aspects of an expense.
 typedef struct Expense{
     char description[LMAX];
     char name[LMAX];
-    Date date;
+    TDate date;
     unsigned int amount;
     int type;
-}Expense;
+}TExpense;
 
 //struct that stores the array of expenses and the actual elements of the array.
-typedef struct data{
-    Expense expenses[NMAX];
+typedef struct Data{
+    TExpense expenses[NMAX];
     int elements;
 }TData;
 
@@ -38,7 +38,7 @@ void Option7();
 void Option8();
 
 TData data;
-Date date;
+TDate date;
 
 int main() {
     int option;
