@@ -36,6 +36,8 @@ void modifyExpense(TData* data, int index);
 void deleteExpense(TData* data, int index);
 void showExpenses(TData* data);
 int mothlyExpenses(TData* data);
+void fixedExpenses(TData* data, int month);
+void variableExpenses(TData* data, int month);
 
 //void functions that will handle the menu.
 // void Option1();
@@ -53,12 +55,12 @@ TDate date;
 int main() {
     int option;
 
-    printf("Input today's day: ");
+    printf("\nInput today's day: ");
     scanf("%d\n", &date.day);
     printf("Input today's month: ");
     scanf("%d\n", &date.month);
     printf("Input today's year: ");
-    scanf("%d\n", &date.year);
+    scanf("%d", &date.year);
 
     do{
         //menu that will be displayed everytime the user runs the program
