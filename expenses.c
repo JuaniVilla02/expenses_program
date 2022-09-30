@@ -164,13 +164,19 @@ void newExpense(TData* data, TDate* date){
         
         //if the type is 1 (that is, the expense is fixed...).
         if (type == 1){
-            strcpy((*data).expenses[(*data).elements].name, name);
-            strcpy((*data).expenses[(*data).elements].description, description);
-            // (*data).expenses[(*data).elements].date.day = (*date).day;
-            // (*data).expenses[(*data).elements].date.month = (*date).month;
-            // (*data).expenses[(*data).elements].date.year = (*date).year;
-            (*data).expenses[(*data).elements].amount = amount;
-            (*data).expenses[(*data).elements].type = type;
+            int j;
+            //i shift every element forward to make room for the new expense.
+            for (j = (*data).elements; j > 0; j--){
+                (*data).expenses[j] = (*data).expenses[j - 1];
+            }
+            //store the data in the empty place
+            strcpy((*data).expenses[j].name, name);
+            strcpy((*data).expenses[j].description, description);
+            // (*data).expenses[0].date.day = (*date).day;
+            // (*data).expenses[0].date.month = (*date).month;
+            // (*data).expenses[0].date.year = (*date).year;
+            (*data).expenses[j].amount = amount;
+            (*data).expenses[j].type = type;
             
             (*data).elements++;
             printf("\nNew expense added successfully!\n");
@@ -183,10 +189,11 @@ void newExpense(TData* data, TDate* date){
                 }    
             }
             pos = i;
-            //every expense in the array is moved one place forward to make room for the new expense.
+            //i shift every element forward to make room for the new expense.
             for (int j = (*data).elements; j >= pos; j--){
                 (*data).expenses[j] = (*data).expenses[j - 1];
             }
+            //store the data in the empty place
             strcpy((*data).expenses[pos].name, name);
             strcpy((*data).expenses[pos].description, description);
             // (*data).expenses[pos].date.day = (*date).day;
@@ -228,7 +235,7 @@ void deleteExpense(TData* data, int index){
         (*data).expenses[i] = (*data).expenses[i + 1];
     }
     (*data).elements--;
-    printf("\nExpense at index %d was modified successfully!\n", index++);
+    printf("\nExpense at index %d was deleted successfully!\n", ++index);
 }
 
 void showExpenses(TData* data){
@@ -240,8 +247,8 @@ void showExpenses(TData* data){
         // printf("%ls\n", &(*data).expenses[i].date.day);
         // printf("%ls\n", &(*data).expenses[i].date.month);
         // printf("%ls\n", &(*data).expenses[i].date.year);
-        printf("Amount: %d\n", (int) (*data).expenses[i].amount);
-        printf("Type: %d\n", (int) (*data).expenses[i].type);
+        printf("Amount: $%d\n", (int) (*data).expenses[i].amount);
+        printf("Type (1 is fixed, 0 is variable): %d\n", (int) (*data).expenses[i].type);
         printf("-----------------------------------\n");
     }
 }
