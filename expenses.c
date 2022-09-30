@@ -175,28 +175,28 @@ void newExpense(TData* data, TDate* date){
             (*data).elements++;
             printf("\nNew expense added successfully!\n");
         }else{
-            int i, j;
+            int i, pos;
             //this loop will traverse the array until it founds the first variable expense.
             for (i = 0; i < NMAX; i++){
                 if ((*data).expenses[i].type != 1){
                     break;
-                }
+                }    
             }
-            j = i;
-            //every expense in the array is moved one place forward to make room for the newly added expense.
-            for (; i <= NMAX; i++){
-                (*data).expenses[i + 1] = (*data).expenses[i];
+            pos = i;
+            //every expense in the array is moved one place forward to make room for the new expense.
+            for (int j = (*data).elements; j >= pos; j--){
+                (*data).expenses[j] = (*data).expenses[j - 1];
             }
-            strcpy((*data).expenses[j].name, name);
-            strcpy((*data).expenses[j].description, description);
-            // (*data).expenses[0].date.day = (*date).day;
-            // (*data).expenses[0].date.month = (*date).month;
-            // (*data).expenses[0].date.year = (*date).year;
-            (*data).expenses[j].amount = amount;
-            (*data).expenses[j].type = type;
+            strcpy((*data).expenses[pos].name, name);
+            strcpy((*data).expenses[pos].description, description);
+            // (*data).expenses[pos].date.day = (*date).day;
+            // (*data).expenses[pos].date.month = (*date).month;
+            // (*data).expenses[pos].date.year = (*date).year;
+            (*data).expenses[pos].amount = amount;
+            (*data).expenses[pos].type = type;
             
             (*data).elements++;
-            printf("\nNew expense was added successfully!\n");
+            printf("\nNew expense added successfully!\n");
         }
     }
 }
@@ -227,10 +227,12 @@ void deleteExpense(TData* data, int index){
     for (; i < (*data).elements; i++){
         (*data).expenses[i] = (*data).expenses[i + 1];
     }
-    printf("\nThe expense at index %d was modified successfully!\n", index++);
+    (*data).elements--;
+    printf("\nExpense at index %d was modified successfully!\n", index++);
 }
 
 void showExpenses(TData* data){
+    printf("\nExpenses:");
     for (int i = 0; i < (*data).elements; i++){
         printf("\n-----------------------------------\n");
         printf("Name: %s\n", (*data).expenses[i].name);
