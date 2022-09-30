@@ -54,13 +54,14 @@ TDate date;
 
 int main() {
     int option;
+    int index;
 
-    printf("\nInput today's day: ");
-    scanf("%d\n", &date.day);
-    printf("Input today's month: ");
-    scanf("%d\n", &date.month);
-    printf("Input today's year: ");
-    scanf("%d", &date.year);
+    // printf("\nInput today's day: ");
+    // scanf("%d\n", &date.day);
+    // printf("Input today's month: ");
+    // scanf("%d\n", &date.month);
+    // printf("Input today's year: ");
+    // scanf("%d", &date.year);
 
     do{
         //menu that will be displayed everytime the user runs the program
@@ -81,19 +82,23 @@ int main() {
 
         switch (option){
             case 1:
-                // Option1();    
+                newExpense(&data, &date);    
                 break;
 
             case 2:
-                // Option2();
+                printf("\nInput the index in which the desired expense to be modified is: ");
+                scanf("%d", &index);
+                modifyExpense(&data, index);
                 break;
 
             case 3:
-                // Option3();
+                printf("\nInput the index in which the desired expense to be deleted is: ");
+                scanf("%d", &index);
+                deleteExpense(&data, index);
                 break;
 
             case 4: 
-                // Option4();
+                showExpenses(&data);
                 break;
 
             case 5:
@@ -122,7 +127,7 @@ int main() {
 
 bool isEmpty(TData* data){
     // if the amount of elements in the array is equal to 0, it returns True.
-    if ((*data).elements== 0){
+    if ((*data).elements == 0){
         return true;
     }else{
         return false;
@@ -147,54 +152,51 @@ void newExpense(TData* data, TDate* date){
     if (isFull(data)){
         printf("The list is full.");
     }else{
-        //the data is asked to the user and stored in local variables.
-        printf("New expenses's name: ");
-        scanf("%s\n", name);
+        //data is asked to the user and stored in local variables.
+        printf("\nNew expenses's name: ");
+        scanf(" %s", name);
         printf("New expense's description: ");
-        scanf("%s\n", description);
+        scanf(" %s", description);
         printf("Amount spended: ");
-        scanf("%d\n", &amount);
+        scanf("%d", &amount);
         printf("Expense type. (1) is fixed, (0) is variable: ");
-        scanf("%d\n", &type);
+        scanf("%d", &type);
         
         //if the type is 1 (that is, the expense is fixed...).
         if (type == 1){
-            //every expense in the array is moved one place forward to make room for the newly added expense.
-            for (int i = 0; i <= NMAX; i++){
-                (*data).expenses[i + 1] = (*data).expenses[i];
-            }
-            strcpy((*data).expenses[0].name, name);
-            strcpy((*data).expenses[0].description, description);
-            (*data).expenses[0].date.day = (*date).day;
-            (*data).expenses[0].date.month = (*date).month;
-            (*data).expenses[0].date.year = (*date).year;
-            (*data).expenses[0].amount = amount;
-            (*data).expenses[0].type = type;
+            strcpy((*data).expenses[(*data).elements].name, name);
+            strcpy((*data).expenses[(*data).elements].description, description);
+            // (*data).expenses[(*data).elements].date.day = (*date).day;
+            // (*data).expenses[(*data).elements].date.month = (*date).month;
+            // (*data).expenses[(*data).elements].date.year = (*date).year;
+            (*data).expenses[(*data).elements].amount = amount;
+            (*data).expenses[(*data).elements].type = type;
+            
             (*data).elements++;
-            printf("New expense was added successfully!\n");
+            printf("\nNew expense added successfully!\n");
         }else{
-            int i;
+            int i, j;
             //this loop will traverse the array until it founds the first variable expense.
             for (i = 0; i < NMAX; i++){
-                if ((*data).expenses[i].type == 1){
-                    continue;
-                }else{
+                if ((*data).expenses[i].type != 1){
                     break;
                 }
             }
+            j = i;
             //every expense in the array is moved one place forward to make room for the newly added expense.
             for (; i <= NMAX; i++){
                 (*data).expenses[i + 1] = (*data).expenses[i];
             }
-            strcpy((*data).expenses[0].name, name);
-            strcpy((*data).expenses[0].description, description);
-            (*data).expenses[0].date.day = (*date).day;
-            (*data).expenses[0].date.month = (*date).month;
-            (*data).expenses[0].date.year = (*date).year;
-            (*data).expenses[0].amount = amount;
-            (*data).expenses[0].type = type;
+            strcpy((*data).expenses[j].name, name);
+            strcpy((*data).expenses[j].description, description);
+            // (*data).expenses[0].date.day = (*date).day;
+            // (*data).expenses[0].date.month = (*date).month;
+            // (*data).expenses[0].date.year = (*date).year;
+            (*data).expenses[j].amount = amount;
+            (*data).expenses[j].type = type;
+            
             (*data).elements++;
-            printf("New expense was added successfully!\n");
+            printf("\nNew expense was added successfully!\n");
         }
     }
 }
@@ -206,16 +208,16 @@ void modifyExpense(TData* data, int index){
     
     index--;
     printf("\nNew expense's name: ");
-    scanf("%s\n", name);
+    scanf("%s", name);
     printf("New expense's description: ");
-    scanf("%s\n", description);
+    scanf("%s", description);
     printf("New expense's amount: ");
-    scanf("%d\n", &amount);
+    scanf("%d", &amount);
     
     strcpy((*data).expenses[index].name, name);
     strcpy((*data).expenses[index].description, description);
     (*data).expenses[index].amount = amount;
-    printf("The expense at index %d was modified successfully!\n", index++);
+    printf("\nThe expense at index %d was modified successfully!\n", ++index);
 }
 
 void deleteExpense(TData* data, int index){
@@ -225,20 +227,19 @@ void deleteExpense(TData* data, int index){
     for (; i < (*data).elements; i++){
         (*data).expenses[i] = (*data).expenses[i + 1];
     }
-    printf("The expense at index %d was modified successfully!\n", index++);
+    printf("\nThe expense at index %d was modified successfully!\n", index++);
 }
 
 void showExpenses(TData* data){
-    printf("\nExpenses:\n");
     for (int i = 0; i < (*data).elements; i++){
         printf("\n-----------------------------------\n");
-        printf("%s\n", (*data).expenses[i].name);
-        printf("%s\n", (*data).expenses[i].description);
-        printf("%ls\n", &(*data).expenses[i].date.day);
-        printf("%ls\n", &(*data).expenses[i].date.month);
-        printf("%ls\n", &(*data).expenses[i].date.year);
-        printf("%ls\n", &(*data).expenses[i].amount);
-        printf("%ls\n", &(*data).expenses[i].type);
+        printf("Name: %s\n", (*data).expenses[i].name);
+        printf("Description: %s\n", (*data).expenses[i].description);
+        // printf("%ls\n", &(*data).expenses[i].date.day);
+        // printf("%ls\n", &(*data).expenses[i].date.month);
+        // printf("%ls\n", &(*data).expenses[i].date.year);
+        printf("Amount: %d\n", (int) (*data).expenses[i].amount);
+        printf("Type: %d\n", (int) (*data).expenses[i].type);
         printf("-----------------------------------\n");
     }
 }
