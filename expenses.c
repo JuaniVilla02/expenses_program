@@ -39,16 +39,6 @@ int monthlyExpenses(TData* data, int month);
 int fixedExpenses(TData* data, int month);
 int variableExpenses(TData* data, int month);
 
-//void functions that will handle the menu.
-// void Option1();
-// void Option2();
-// void Option3();
-// void Option4();
-// void Option5();
-// void Option6();
-// void Option8();
-// void Option9();
-
 TData data;
 TDate date;
 
@@ -121,7 +111,6 @@ int main() {
                 break;
 
             case 8:
-                // Option8();
                 return 0;
                 break;
             
@@ -219,78 +208,107 @@ void modifyExpense(TData* data, int index){
     char name[LMAX];
     char description[LMAX];
     int amount;
+
+    if (isEmpty(data)){
+        printf("The list is empty.");
+    }else{
+        index--;
+        printf("\nNew expense's name: ");
+        scanf("%s", name);
+        printf("New expense's description: ");
+        scanf("%s", description);
+        printf("New expense's amount: ");
+        scanf("%d", &amount);
     
-    index--;
-    printf("\nNew expense's name: ");
-    scanf("%s", name);
-    printf("New expense's description: ");
-    scanf("%s", description);
-    printf("New expense's amount: ");
-    scanf("%d", &amount);
-    
-    strcpy((*data).expenses[index].name, name);
-    strcpy((*data).expenses[index].description, description);
-    (*data).expenses[index].amount = amount;
-    printf("\nThe expense at index %d was modified successfully!\n", ++index);
+        strcpy((*data).expenses[index].name, name);
+        strcpy((*data).expenses[index].description, description);
+        (*data).expenses[index].amount = amount;
+        printf("\nThe expense at index %d was modified successfully!\n", ++index);
+    }
 }
 
 void deleteExpense(TData* data, int index){
-    index--;
-    int i = index;
     
-    for (; i < (*data).elements; i++){
-        (*data).expenses[i] = (*data).expenses[i + 1];
+    if (isEmpty(data)){
+        printf("The list is empty.");
+    }else{
+        index--;
+        int i = index;
+    
+        for (; i < (*data).elements; i++){
+            (*data).expenses[i] = (*data).expenses[i + 1];
+        }
+        (*data).elements--;
+        printf("\nExpense at index %d was deleted successfully!\n", ++index);
     }
-    (*data).elements--;
-    printf("\nExpense at index %d was deleted successfully!\n", ++index);
 }
 
 void showExpenses(TData* data){
-    printf("\nExpenses:");
-    for (int i = 0; i < (*data).elements; i++){
-        printf("\n-----------------------------------\n");
-        printf("Name: %s\n", (*data).expenses[i].name);
-        printf("Description: %s\n", (*data).expenses[i].description);
-        printf("Date: %d/%d/%d \n", (*data).expenses[i].date.day, (*data).expenses[i].date.month, (*data).expenses[i].date.year);
-        printf("Amount: $%d\n", (int) (*data).expenses[i].amount);
-        printf("Type (1 is fixed, 0 is variable): %d\n", (int) (*data).expenses[i].type);
-        printf("-----------------------------------\n");
+    
+    if (isEmpty(data)){
+        printf("The list is empty.");
+    }else{
+        printf("\nExpenses:");
+        for (int i = 0; i < (*data).elements; i++){
+            printf("\n-----------------------------------\n");
+            printf("Name: %s\n", (*data).expenses[i].name);
+            printf("Description: %s\n", (*data).expenses[i].description);
+            printf("Date: %d/%d/%d \n", (*data).expenses[i].date.day, (*data).expenses[i].date.month, (*data).expenses[i].date.year);
+            printf("Amount: $%d\n", (int) (*data).expenses[i].amount);
+            printf("Type (1 is fixed, 0 is variable): %d\n", (int) (*data).expenses[i].type);
+            printf("-----------------------------------\n");
+        }
     }
 }
 
 int monthlyExpenses(TData* data, int month){
-    int counter = 0;
+    
+    if (isEmpty(data)){
+        printf("The list is empty.");
+    }else{
+        int counter = 0;
 
-    for (int i = 0; i < (*data).elements; i++){
-        if ((*data).expenses[i].date.month == month){
-            counter += (*data).expenses[i].amount; 
-        }else{
-            continue;
+        for (int i = 0; i < (*data).elements; i++){
+            if ((*data).expenses[i].date.month == month){
+                counter += (*data).expenses[i].amount; 
+            }else{
+                continue;
+            }
         }
-    }
-    return counter;
+        return counter;
+    }   
 }
 
 int fixedExpenses(TData* data, int month){
-    int counter = 0;
     
-    for (int i = 0; i < (*data).elements; i++){
-        if ((*data).expenses[i].type == 1 && (*data).expenses[i].date.month == month){
-            counter += (*data).expenses[i].amount;
-            showExpenses(data);
+    if (isEmpty(data)){
+        printf("The list is empty.");
+    }else{
+        int counter = 0;
+    
+        for (int i = 0; i < (*data).elements; i++){
+            if ((*data).expenses[i].type == 1 && (*data).expenses[i].date.month == month){
+                counter += (*data).expenses[i].amount;
+                showExpenses(data);
+            }
         }
+        return counter;
     }
-    return counter;
 }
 
 int variableExpenses(TData* data, int month){
-    int counter = 0;
+    
+    if (isEmpty(data)){
+        printf("The list is empty.");
+    }else{
+        int counter = 0;
 
-    for (int i = 0; i < (*data).elements; i++){
-        if ((*data).expenses[i].type == 0 && (*data).expenses[i].date.month == month){
-            counter += (*data).expenses[i].amount;
-            showExpenses(data);
-        }    
+        for (int i = 0; i < (*data).elements; i++){
+            if ((*data).expenses[i].type == 0 && (*data).expenses[i].date.month == month){
+                counter += (*data).expenses[i].amount;
+                showExpenses(data);
+            }    
+        }
+        return counter;
     }
-    return counter;
 }
