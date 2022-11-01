@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define NMAX 10
+#define NMAX 100
 #define LMAX 100
 
 //struct that stores all the aspects of a date.
